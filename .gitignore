@@ -1,0 +1,19 @@
+# XcodeGen / Xcode Build Artifacts
+*.xcodeproj/
+*.xcworkspace/
+build/
+DerivedData/
+
+# App Packaging
+*.ipa
+*.xcarchive
+*.app
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Cache directories
+.caches/
+.tmp/
+*.tmp

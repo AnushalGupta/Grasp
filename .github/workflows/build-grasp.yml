@@ -1,0 +1,51 @@
+name: Build Grasp iOS IPA (Free Cloud Compiler)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual trigger from the GitHub web UI
+
+jobs:
+  build:
+    name: Compile Unsigned IPA
+    runs-on: macos-14 # Uses Apple Silicon M1/M2 runners for extreme speed
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build and Archive (Code Signing Disabled)
+        run: |
+          xcodebuild clean archive \
+            -project Grasp.xcodeproj \
+            -scheme Grasp \
+            -archivePath build/Grasp.xcarchive \
+            -sdk iphoneos \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package into IPA
+        run: |
+          mkdir -p Payload
+          # Move the compiled app binary into Payload folder
+          cp -r build/Grasp.xcarchive/Products/Applications/Grasp.app Payload/
+          # Zip the Payload folder and rename extension to .ipa
+          zip -r Grasp.ipa Payload
+          echo "IPA packaging successful. File size:"
+          du -sh Grasp.ipa
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Grasp-Unsigned-IPA
+          path: Grasp.ipa
+          if-no-files-found: error

@@ -20,7 +20,7 @@ class DownloadManager: NSObject, ObservableObject {
     private let queue = DispatchQueue(label: "com.antigravity.grasp.downloadQueue", attributes: .concurrent)
     
     // Hold references to active session tasks to allow cancellation/pause
-    private var sessionTasks: [UUID: [URLSessionDataTask]] = [:]
+    private var sessionTasks: [UUID: [URLSessionTask]] = [:]
     private var taskProgressLocks: [UUID: NSLock] = [:]
     
     private override init() {
@@ -207,7 +207,7 @@ class DownloadManager: NSObject, ObservableObject {
         }
         
         self.queue.async(flags: .assignCurrentContext) {
-            self.sessionTasks[task.id] = [downloadTask as! URLSessionDataTask]
+            self.sessionTasks[task.id] = [downloadTask]
         }
         downloadTask.resume()
     }
@@ -303,7 +303,7 @@ class DownloadManager: NSObject, ObservableObject {
         let fileSize = task.totalBytes
         let chunkSize = fileSize / Int64(threads)
         
-        var spawnedTasks: [URLSessionDataTask] = []
+        var spawnedTasks: [URLSessionTask] = []
         let dispatchGroup = DispatchGroup()
         
         let lock = NSLock()

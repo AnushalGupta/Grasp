@@ -221,7 +221,7 @@ struct ContentView: View {
                         .stroke(Color.cyan, lineWidth: 2)
                         .frame(width: 22, height: 22)
                     
-                    Text("\\(state.tabs.count)")
+                    Text("\(state.tabs.count)")
                         .font(.system(size: 11, weight: .bold))
                         .foregroundColor(.cyan)
                 }
@@ -288,7 +288,7 @@ struct ContentView: View {
                     Text("Media Captured")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.white)
-                    Text("Grab media streams (\\(state.capturedMedia.count))")
+                    Text("Grab media streams (\(state.capturedMedia.count))")
                         .font(.system(size: 10))
                         .foregroundColor(.cyan)
                 }
@@ -333,7 +333,7 @@ struct ContentView: View {
                 
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 14), GridItem(.flexible(), spacing: 14)], spacing: 14) {
-                        ForEach(state.tabs.indices, id: \\.self) { index in
+                        ForEach(state.tabs.indices, id: \.self) { index in
                             let tab = state.tabs[index]
                             let isActive = index == state.activeTabIndex
                             
@@ -450,7 +450,7 @@ struct ContentView: View {
                             .font(.caption2)
                             .foregroundColor(.gray)
                         Spacer()
-                        Text("\\(Int(customThreadCount)) Parts")
+                        Text("\(Int(customThreadCount)) Parts")
                             .font(.caption2)
                             .bold()
                             .foregroundColor(.cyan)
@@ -532,7 +532,7 @@ struct MediaGrabberListView: View {
                                 .font(.caption)
                                 .foregroundColor(.gray)
                             Spacer()
-                            Text("\\(Int(downloadThreads)) concurrent segments")
+                            Text("\(Int(downloadThreads)) concurrent segments")
                                 .font(.caption)
                                 .bold()
                                 .foregroundColor(.cyan)
@@ -546,7 +546,7 @@ struct MediaGrabberListView: View {
                     
                     ScrollView {
                         LazyVStack(spacing: 12) {
-                            ForEach(Array(state.capturedMedia), id: \\.self) { media in
+                            ForEach(Array(state.capturedMedia), id: \.self) { media in
                                 HStack {
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(media.title)

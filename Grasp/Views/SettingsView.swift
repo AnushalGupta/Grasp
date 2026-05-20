@@ -1,4 +1,5 @@
 import SwiftUI
+import WebKit
 
 struct SettingsView: View {
     @EnvironmentObject var state: BrowserState
@@ -77,7 +78,7 @@ struct SettingsView: View {
                         HStack {
                             Text("Default Threads")
                             Spacer()
-                            Text("\\(state.threadCountSetting) Threads")
+                            Text("\(state.threadCountSetting) Threads")
                                 .bold()
                                 .foregroundColor(.cyan)
                         }
@@ -95,7 +96,7 @@ struct SettingsView: View {
                         get: { downloadManager.bufferSizeSetting },
                         set: { downloadManager.bufferSizeSetting = $0 }
                     )) {
-                        ForEach(bufferSizes.sorted(by: { $0.key < $1.key }), id: \\.key) { key, value in
+                        ForEach(bufferSizes.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
                             Text(value).tag(key)
                         }
                     }
@@ -119,7 +120,7 @@ struct SettingsView: View {
                 // MARK: - Advanced Networking Section
                 Section(header: Text("Custom DNS Configurations")) {
                     Picker("DNS Resolution", selection: $state.selectedDNSProvider) {
-                        ForEach(state.dnsProviders, id: \\.self) { provider in
+                        ForEach(state.dnsProviders, id: \.self) { provider in
                             Text(provider).tag(provider)
                         }
                     }
@@ -184,7 +185,7 @@ struct SettingsView: View {
             if let error = error {
                 DispatchQueue.main.async {
                     adblockManager.isCompiling = false
-                    alertMessage = "Failed to fetch filters: \\(error.localizedDescription)"
+                    alertMessage = "Failed to fetch filters: \(error.localizedDescription)"
                     showsAlert = true
                 }
                 return

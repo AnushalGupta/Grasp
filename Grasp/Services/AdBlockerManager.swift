@@ -93,7 +93,7 @@ class AdBlockerManager: ObservableObject {
                     self?.compilationProgress = 1.0
                     
                     if let error = error {
-                        print("[AdBlocker] Compilation failed: \\(error.localizedDescription)")
+                        print("[AdBlocker] Compilation failed: \(error.localizedDescription)")
                         completion?(false)
                     } else if let ruleList = ruleList {
                         self?.activeRuleList = ruleList
@@ -113,7 +113,7 @@ class AdBlockerManager: ObservableObject {
         var globalCosmeticSelectors: [String] = []
         var domainSpecificCosmeticRules: [String: [String]] = [:] // domain: [selectors]
         
-        print("[AdBlocker] Starting parse of \\(lines.count) lines...")
+        print("[AdBlocker] Starting parse of \(lines.count) lines...")
         
         for rawLine in lines {
             let line = rawLine.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -219,11 +219,11 @@ class AdBlockerManager: ObservableObject {
             let trimmedRules = Array(rules.prefix(40000))
             let jsonData = try JSONSerialization.data(withJSONObject: trimmedRules, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("[AdBlocker] Parsed filters successfully. Total compiled rules: \\(trimmedRules.count)")
+                print("[AdBlocker] Parsed filters successfully. Total compiled rules: \(trimmedRules.count)")
                 return jsonString
             }
         } catch {
-            print("[AdBlocker] JSON serialization error: \\(error)")
+            print("[AdBlocker] JSON serialization error: \(error)")
         }
         
         return "[]"

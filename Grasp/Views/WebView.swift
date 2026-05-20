@@ -78,7 +78,7 @@ struct WebView: UIViewRepresentable {
         }
         
         func setupProgressObserver(for webView: WKWebView) {
-            progressObserver = webView.observe(\\WKWebView.estimatedProgress, options: .new) { [weak self] webView, _ in
+            progressObserver = webView.observe(\WKWebView.estimatedProgress, options: .new) { [weak self] webView, _ in
                 DispatchQueue.main.async {
                     self?.parent.tab.estimatedProgress = webView.estimatedProgress
                 }
@@ -140,7 +140,7 @@ struct WebView: UIViewRepresentable {
             let type = dict["type"] as? String ?? "video/mp4"
             let action = dict["action"] as? String ?? ""
             
-            print("[WebView Message] Intercepted stream payload: \\(urlStr), Action: \\(action)")
+            print("[WebView Message] Intercepted stream payload: \(urlStr), Action: \(action)")
             
             // Add to captured media list in global state
             parent.state.addCapturedMedia(url: url, title: title, type: type)

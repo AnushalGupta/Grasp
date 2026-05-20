@@ -51,7 +51,7 @@ class DownloadManager: NSObject, ObservableObject {
                 self.completedFiles = files.filter { !$0.lastPathComponent.hasPrefix(".") }
             }
         } catch {
-            print("[DownloadManager] Error loading downloads: \\(error)")
+            print("[DownloadManager] Error loading downloads: \(error)")
         }
     }
     
@@ -150,7 +150,7 @@ class DownloadManager: NSObject, ObservableObject {
             task.status = .downloading
             
             if acceptsRanges && totalLength > 0 {
-                print("[Downloader] Server supports RANGES. Spawning \\(task.threadCount) segments.")
+                print("[Downloader] Server supports RANGES. Spawning \(task.threadCount) segments.")
                 self.launchSegmentedDownload(task: task)
             } else {
                 print("[Downloader] Ranges unsupported. Falling back to single-threaded download.")
@@ -201,7 +201,7 @@ class DownloadManager: NSObject, ObservableObject {
             } catch {
                 DispatchQueue.main.async {
                     task.status = .failed
-                    task.errorMessage = "Failed to save file: \\(error.localizedDescription)"
+                    task.errorMessage = "Failed to save file: \(error.localizedDescription)"
                 }
             }
         }
@@ -339,7 +339,7 @@ class DownloadManager: NSObject, ObservableObject {
                 guard let data = data else {
                     lock.lock()
                     hasFailed = true
-                    failError = "No data returned for segment \\(i)"
+                    failError = "No data returned for segment \(i)"
                     lock.unlock()
                     return
                 }
@@ -365,7 +365,7 @@ class DownloadManager: NSObject, ObservableObject {
                 } catch {
                     lock.lock()
                     hasFailed = true
-                    failError = "File system write failed: \\(error.localizedDescription)"
+                    failError = "File system write failed: \(error.localizedDescription)"
                     lock.unlock()
                 }
             }
@@ -415,7 +415,7 @@ class DownloadManager: NSObject, ObservableObject {
                     let partData = try Data(contentsOf: partURL, options: .mappedIfSafe)
                     fileHandle.write(partData)
                 } else {
-                    throw NSError(domain: "Downloader", code: 404, userInfo: [NSLocalizedDescriptionKey: "Segment part \\(i) missing."])
+                    throw NSError(domain: "Downloader", code: 404, userInfo: [NSLocalizedDescriptionKey: "Segment part \(i) missing."])
                 }
             }
             
@@ -435,14 +435,14 @@ class DownloadManager: NSObject, ObservableObject {
         } catch {
             DispatchQueue.main.async {
                 task.status = .failed
-                task.errorMessage = "Failed to assemble download files: \\(error.localizedDescription)"
+                task.errorMessage = "Failed to assemble download files: \(error.localizedDescription)"
             }
         }
     }
     
     // MARK: - Helpers
     private func getPartFileURL(taskId: UUID, threadId: Int) -> URL {
-        return cacheDirectory.appendingPathComponent("grasp_\\(taskId.uuidString)_part\\(threadId).tmp")
+        return cacheDirectory.appendingPathComponent("grasp_\(taskId.uuidString)_part\(threadId).tmp")
     }
     
     private func cleanupPartFiles(taskId: UUID, threadCount: Int) {
@@ -460,7 +460,7 @@ class DownloadManager: NSObject, ObservableObject {
         
         var counter = 1
         while FileManager.default.fileExists(atPath: finalURL.path) {
-            let newName = "\\(name)_\\(counter)"
+            let newName = "\(name)_\(counter)"
             finalURL = folder.appendingPathComponent(newName).appendingPathExtension(ext)
             counter += 1
         }

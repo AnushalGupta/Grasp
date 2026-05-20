@@ -19,8 +19,8 @@ struct DownloadsListView: View {
                 VStack(spacing: 16) {
                     // Segment Picker (Active vs Completed)
                     Picker("", selection: $selectedSegment) {
-                        Text("Active (\\(downloadManager.activeTasks.count))").tag(0)
-                        Text("Completed (\\(downloadManager.completedFiles.count))").tag(1)
+                        Text("Active (\(downloadManager.activeTasks.count))").tag(0)
+                        Text("Completed (\(downloadManager.completedFiles.count))").tag(1)
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .padding(.horizontal)
@@ -99,7 +99,7 @@ struct DownloadsListView: View {
                 .frame(maxHeight: .infinity)
             } else {
                 List {
-                    ForEach(downloadManager.completedFiles, id: \\.self) { fileUrl in
+                    ForEach(downloadManager.completedFiles, id: \.self) { fileUrl in
                         CompletedFileRow(fileUrl: fileUrl, onPlay: {
                             self.activePlayerUrl = fileUrl
                         }, onDelete: {
@@ -135,7 +135,7 @@ struct ActiveTaskRow: View {
                             .bold()
                             .foregroundColor(statusColor)
                         
-                        Text("\\(task.threadCount) Threads")
+                        Text("\(task.threadCount) Threads")
                             .font(.caption2)
                             .foregroundColor(.gray)
                     }
@@ -190,7 +190,7 @@ struct ActiveTaskRow: View {
             HStack {
                 let sizeStr = formatBytes(task.totalBytes)
                 let downloadedStr = formatBytes(task.downloadedBytes)
-                Text("\\(downloadedStr) of \\(sizeStr)")
+                Text("\(downloadedStr) of \(sizeStr)")
                     .font(.caption2)
                     .foregroundColor(.gray)
                 

@@ -20,7 +20,7 @@ struct SettingsView: View {
                 // MARK: - Adblocking Section
                 Section(header: Text("Shield & Adblocking")) {
                     Toggle("Adblock Engine", isOn: $state.adblockEnabled)
-                        .onChange(isOn: state.adblockEnabled) { value in
+                        .onChange(of: state.adblockEnabled) { value in
                             if value {
                                 adblockManager.loadExistingRuleList()
                             } else {

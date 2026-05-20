@@ -18,9 +18,11 @@ jobs:
 
       - name: Select Stable Xcode Version
         run: |
-          # Bypasses potential beta Xcode glitches by selecting stable Xcode 15.4
+          # Prioritizes Xcode 16 versions to match the modern XcodeGen output format
+          sudo xcode-select -switch /Applications/Xcode_16.2.app || \
+          sudo xcode-select -switch /Applications/Xcode_16.1.app || \
+          sudo xcode-select -switch /Applications/Xcode_16.0.app || \
           sudo xcode-select -switch /Applications/Xcode_15.4.app || \
-          sudo xcode-select -switch /Applications/Xcode_15.0.app || \
           xcode-select -p
 
       - name: Install XcodeGen

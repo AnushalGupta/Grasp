@@ -43,15 +43,44 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO
 
-      - name: Package into IPA
+      - name: Ad-hoc Sign & Package into IPA
         run: |
+          APP_PATH="build_derived/Build/Products/Release-iphoneos/Grasp.app"
+          
+          echo "=== Listing .app contents ==="
+          ls -laR "$APP_PATH"
+          
+          echo "=== Creating minimal entitlements ==="
+          cat > entitlements.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>com.apple.security.application-groups</key>
+              <array>
+                  <string>group.com.antigravity.grasp</string>
+              </array>
+          </dict>
+          </plist>
+          EOF
+          
+          echo "=== Ad-hoc signing the .app bundle ==="
+          # Ad-hoc sign with - identity (no certificate needed)
+          codesign --force --deep --sign - --entitlements entitlements.plist "$APP_PATH"
+          
+          echo "=== Verifying signature ==="
+          codesign -dvv "$APP_PATH" || true
+          
+          echo "=== Packaging into IPA ==="
           mkdir -p Payload
-          # Move the compiled app binary from release-iphoneos products into Payload folder
-          cp -r build_derived/Build/Products/Release-iphoneos/Grasp.app Payload/
-          # Zip the Payload folder and rename extension to .ipa
+          cp -r "$APP_PATH" Payload/
           zip -r Grasp.ipa Payload
-          echo "IPA packaging successful. File size:"
+          
+          echo "=== IPA packaging successful ==="
+          echo "File size:"
           du -sh Grasp.ipa
+          echo "IPA contents:"
+          unzip -l Grasp.ipa | tail -20
 
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4

@@ -16,28 +16,36 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Select Stable Xcode Version
+        run: |
+          # Bypasses potential beta Xcode glitches by selecting stable Xcode 15.4
+          sudo xcode-select -switch /Applications/Xcode_15.4.app || \
+          sudo xcode-select -switch /Applications/Xcode_15.0.app || \
+          xcode-select -p
+
       - name: Install XcodeGen
         run: brew install xcodegen
 
       - name: Generate Xcode Project
         run: xcodegen generate
 
-      - name: Build and Archive (Code Signing Disabled)
+      - name: Build App (DerivedData + Code Signing Disabled)
         run: |
-          xcodebuild clean archive \
+          xcodebuild build \
             -project Grasp.xcodeproj \
             -scheme Grasp \
-            -archivePath build/Grasp.xcarchive \
+            -configuration Release \
             -sdk iphoneos \
+            -derivedDataPath build_derived \
+            CODE_SIGNING_ALLOWED=NO \
             CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_REQUIRED=NO
 
       - name: Package into IPA
         run: |
           mkdir -p Payload
-          # Move the compiled app binary into Payload folder
-          cp -r build/Grasp.xcarchive/Products/Applications/Grasp.app Payload/
+          # Move the compiled app binary from release-iphoneos products into Payload folder
+          cp -r build_derived/Build/Products/Release-iphoneos/Grasp.app Payload/
           # Zip the Payload folder and rename extension to .ipa
           zip -r Grasp.ipa Payload
           echo "IPA packaging successful. File size:"

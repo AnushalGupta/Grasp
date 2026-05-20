@@ -1,0 +1,62 @@
+{
+  "images" : [
+    {
+      "size" : "20x20",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "role" : "notification"
+    },
+    {
+      "size" : "20x20",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "role" : "notification"
+    },
+    {
+      "size" : "29x29",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "role" : "settings"
+    },
+    {
+      "size" : "29x29",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "role" : "settings"
+    },
+    {
+      "size" : "40x40",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "role" : "spotlight"
+    },
+    {
+      "size" : "40x40",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "role" : "spotlight"
+    },
+    {
+      "size" : "60x60",
+      "idiom" : "iphone",
+      "scale" : "2x",
+      "role" : "app"
+    },
+    {
+      "size" : "60x60",
+      "idiom" : "iphone",
+      "scale" : "3x",
+      "role" : "app"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "scale" : "1x",
+      "role" : "app"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}
